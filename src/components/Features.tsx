@@ -33,8 +33,8 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-16 bg-white dark:bg-slate-900">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 text-center">
+    <section className=" px-6 md:px-12 py-12 text-center bg-white dark:bg-slate-900">
+      <div>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-8">
           Powerful Features
         </h2>
@@ -42,7 +42,7 @@ export default function Features() {
           Enhance your blogging experience with AI-powered tools designed to make content creation effortless.
         </p>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map(({ title, description, icon }, i) => (
             <motion.div
               key={title}

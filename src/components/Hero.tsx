@@ -67,7 +67,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative bg-gradient-to-r from-indigo-700 via-indigo-900 to-slate-900 text-white min-h-[80vh] flex flex-col justify-center items-center px-6 md:px-12 text-center overflow-hidden">
+    <section className="relative bg-gradient-to-r from-indigo-700 via-indigo-900 to-slate-900 text-white min-h-[80vh] flex flex-col justify-center items-center px-6 md:px-12 py-12 text-center overflow-hidden">
       {/* Animated Icons */}
       <motion.div
         className="absolute top-10 left-10 text-indigo-300 text-4xl opacity-70"
