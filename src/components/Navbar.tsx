@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import Logo from './Logo';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -26,7 +27,7 @@ export default function Navbar() {
       <div className="px-6 md:px-12">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-2xl font-bold text-indigo-400 hover:text-indigo-300 transition">
-            BlogAI
+            <Logo />
           </Link>
 
           {/* Desktop Nav */}
