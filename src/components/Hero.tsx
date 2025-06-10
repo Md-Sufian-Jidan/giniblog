@@ -102,7 +102,7 @@ export default function Hero() {
         Build, manage, and enhance your blog posts with AI-powered tools — all in one platform.
       </p>
       <motion.a
-        href="/create"
+        href="/register"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="mt-10 inline-block bg-indigo-600 hover:bg-indigo-500 px-8 py-3 rounded-lg font-semibold text-lg shadow-lg transition"

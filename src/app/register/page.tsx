@@ -1,138 +1,95 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/react';
-import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+// import { setUserRegistered } from '@/redux/features/authSlice';
 
-type FormData = {
+interface FormValues {
   name: string;
   email: string;
   password: string;
-};
+  image: FileList;
+}
 
 export default function RegisterPage() {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>();
+  const dispatch = useDispatch();
 
-  const onSubmit = async (data: FormData) => {
-    const toastId = toast.loading('Creating your account...');
+  const onSubmit = async (data: FormValues) => {
+    setLoading(true);
 
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+    const reader = new FileReader();
+    reader.readAsDataURL(data.image[0]);
 
-    const result = await res.json();
+    reader.onloadend = async () => {
+      const base64Image = reader.result;
 
-    if (!res.ok) {
-      toast.error(result.message || 'Registration failed', { id: toastId });
-      return;
-    }
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            image: base64Image,
+          })
+        });
 
-    toast.success('Account created! Signing in...', { id: toastId });
+        const result = await res.json();
 
-    // Auto-login after registration
-    await signIn('credentials', {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+        if (!res.ok) throw new Error(result.message);
 
-    router.push('/');
+        toast.success('Registered successfully!');
+        // dispatch(setUserRegistered(true));
+        router.push('/login');
+        reset();
+      } catch (err: any) {
+        toast.error(err.message || 'Registration failed');
+      } finally {
+        setLoading(false);
+      }
+    };
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white px-4">
-      <motion.div
-        className="w-full max-w-md bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+    <div className="max-w-md mx-auto mt-12 p-6 border rounded-lg shadow-lg dark:bg-slate-900">
+      <h1 className="text-2xl font-bold mb-6 text-center">Create Account</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label>Name</label>
+          <input type="text" {...register('name', { required: true })} className="input" />
+          {errors.name && <span className="text-red-500 text-sm">Name is required</span>}
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name */}
-          <div>
-            <label className="block mb-1 text-sm">Name</label>
-            <input
-              {...register('name', { required: 'Name is required' })}
-              className="w-full p-2 border rounded-md bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600"
-            />
-            {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
-          </div>
+        <div>
+          <label>Email</label>
+          <input type="email" {...register('email', { required: true })} className="input" />
+          {errors.email && <span className="text-red-500 text-sm">Email is required</span>}
+        </div>
 
-          {/* Email */}
-          <div>
-            <label className="block mb-1 text-sm">Email</label>
-            <input
-              type="email"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'Invalid email address',
-                },
-              })}
-              className="w-full p-2 border rounded-md bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600"
-            />
-            {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-          </div>
+        <div>
+          <label>Password</label>
+          <input type="password" {...register('password', { required: true, minLength: 6 })} className="input" />
+          {errors.password && <span className="text-red-500 text-sm">Password is required (min 6 characters)</span>}
+        </div>
 
-          {/* Password */}
-          <div>
-            <label className="block mb-1 text-sm">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-                className="w-full p-2 border rounded-md bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 pr-10"
-              />
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-2.5 right-3 text-xl text-gray-500 cursor-pointer"
-              >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
-              </span>
-            </div>
-            {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
-          </div>
+        <div>
+          <label>Profile Image</label>
+          <input type="file" accept="image/*" {...register('image', { required: true })} className="input" />
+          {errors.image && <span className="text-red-500 text-sm">Image is required</span>}
+        </div>
 
-          {/* Submit */}
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            disabled={isSubmitting}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md transition disabled:opacity-50"
-          >
-            {isSubmitting ? 'Registering...' : 'Register'}
-          </motion.button>
-        </form>
-
-        <p className="text-sm mt-4 text-center">
-          Already have an account?{' '}
-          <a href="/login" className="text-indigo-500 hover:underline">
-            Sign in
-          </a>
-        </p>
-      </motion.div>
+        <button type="submit" className="btn-primary w-full" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </button>
+      </form>
     </div>
   );
 }

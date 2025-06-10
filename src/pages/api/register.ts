@@ -1,31 +1,37 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import bcrypt from 'bcryptjs';
-import dbConnect from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
+import bcrypt from 'bcryptjs';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end();
+export default async function handler(req, res) {
+    if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, password } = req.body;
+    try {
+        const { name, email, password, image } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: 'Missing required fields' });
-  }
+        if (!name || !email || !password || !image) {
+            return res.status(400).json({ message: 'Missing fields' });
+        }
 
-  await dbConnect();
+        await connectDB();
 
-  const existing = await User.findOne({ email });
-  if (existing) {
-    return res.status(400).json({ message: 'Email already in use' });
-  }
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-  });
+        await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            image,
+        });
 
-  return res.status(201).json({ message: 'User created', userId: newUser._id });
+        return res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error('Register API error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 }
+

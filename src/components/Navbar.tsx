@@ -41,10 +41,7 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link
-              href="/login"
-              className="bg-indigo-600 px-4 py-1.5 rounded-md text-sm hover:bg-indigo-500 transition"
-            >
+            <Link href={'/login'}>
               Login
             </Link>
           </div>

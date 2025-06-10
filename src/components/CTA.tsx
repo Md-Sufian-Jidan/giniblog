@@ -35,7 +35,7 @@ export default function CTA() {
           transition={{ type: 'spring', stiffness: 200 }}
         >
           <Link
-            href="/signup"
+            href="/register"
             className="inline-block px-8 py-4 bg-white text-indigo-700 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Get Started
