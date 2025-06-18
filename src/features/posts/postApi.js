@@ -66,15 +66,29 @@ export const postApi = createApi({
       providesTags: ['Posts'],
     }),
     likePost: builder.mutation({
-      query: ({ id }) => ({ url: `/blogs/${id}/like`, method: 'POST', body: { action: 'like' } }), invalidatesTags: ['Posts']
+      query: ({ id }) => ({
+        url: `/posts/${id}/like`,
+        method: 'POST',
+        data: { action: 'like' },
+      }),
+      invalidatesTags: ['Posts'],
     }),
     dislikePost: builder.mutation({
-      query: ({ id }) => ({ url: `/blogs/${id}/like`, method: 'POST', body: { action: 'dislike' } }), invalidatesTags: ['Posts']
+      query: ({ id }) => ({
+        url: `/posts/${id}/like`,
+        method: 'POST',
+        data: { action: 'dislike' },
+      }),
+      invalidatesTags: ['Posts'],
     }),
     commentPost: builder.mutation({
-      query: ({ id, content }) => ({ url: `/blogs/${id}/comment`, method: 'POST', body: { content } }), invalidatesTags: ['Posts']
+      query: ({ id, content }) => ({
+        url: `/posts/${id}/comment`,
+        method: 'POST',
+        data: { content },
+      }),
+      invalidatesTags: ['Posts'],
     }),
-
   }),
 });
 

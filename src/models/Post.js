@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 const commentSchema = new mongoose.Schema({
     userEmail: String,
     content: String,
-    date: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 const PostSchema = new mongoose.Schema(
     {
@@ -46,8 +45,14 @@ const PostSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
-        upvotes: { type: Number, default: 0 },
-        downvotes: { type: Number, default: 0 },
+        upvotes: {
+            type: Number,
+            default: 0
+        },
+        downvotes: {
+            type: Number,
+            default: 0
+        },
         comments: [commentSchema],
     },
     { timestamps: true }
