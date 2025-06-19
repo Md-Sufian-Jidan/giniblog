@@ -68,7 +68,6 @@ export const postApi = createApi({
       }),
       providesTags: ['Posts'],
     }),
-
     likePost: builder.mutation({
       query: ({ id }) => ({
         url: `/posts/${id}/like`,

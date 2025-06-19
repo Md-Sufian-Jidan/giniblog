@@ -25,7 +25,7 @@ const Navbar = () => {
 
     return (
         <nav className={`sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''} bg-[#FAF8F6] border-b border-gray-200 shadow-sm px-6 py-4`}>
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 {/* Logo */}
                 <Link href="/">
                     <span className="text-2xl font-bold text-[#A78BFA] hover:cursor-pointer">GiniBlog</span>

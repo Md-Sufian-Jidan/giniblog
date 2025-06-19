@@ -9,7 +9,7 @@ const Hero = () => {
     return (
         <section className="bg-[#FAF8F6] py-20 px-6 md:px-12 relative overflow-hidden">
             {/* Text Area */}
-            <div className="max-w-5xl mx-auto text-center z-10 relative">
+            <div className="text-center z-10 relative">
                 <motion.h1
                     className="text-4xl md:text-6xl font-extrabold text-[#1F2937] mb-6"
                     initial={{ opacity: 0, y: 20 }}

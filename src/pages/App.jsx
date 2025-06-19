@@ -12,7 +12,9 @@ export default function App({ children }) {
     return (
         <Provider store={store}>
             <ClerkProvider dynamic>
-                {!isDashboard && <Navbar />}
+                <div className='h-16'>
+                    {!isDashboard && <Navbar />}
+                </div>
                 {children}
             </ClerkProvider >
         </Provider>
