@@ -1,5 +1,6 @@
 import FeaturedPosts from "@/Components/FeaturedPosts/FeaturedPosts";
 import Hero from "@/Components/Hero/Hero";
+import MeetGini from "@/Components/MeetGini/MeetGini";
 import TagsCloud from "@/Components/TagsCloud/TagsCloud";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       {/* <FeaturedPosts /> */}
       <TagsCloud />
+      <MeetGini />
     </>
   );
 }
