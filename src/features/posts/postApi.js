@@ -54,12 +54,15 @@ export const postApi = createApi({
       providesTags: ['Posts'],
     }),
     getAllPosts: builder.query({
-      query: () => ({ url: '/posts', method: 'GET' }),
+      query: () => ({
+        url: '/posts',
+        method: 'GET'
+      }),
       providesTags: ['Posts'],
     }),
     getPosts: builder.query({
       query: ({ page = 1, search = '' }) => ({
-        url: '/posts',
+        url: '/blogs',
         method: 'GET',
         params: { page, search },
       }),

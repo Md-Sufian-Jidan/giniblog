@@ -10,7 +10,7 @@ export async function GET(req) {
     const page = parseInt(searchParams.get('page')) || 1;
     const search = searchParams.get('search') || '';
     const email = searchParams.get('author_email');
-    const limit = 10;
+    const limit = 12;
     const skip = (page - 1) * limit;
     const query = {};
 
