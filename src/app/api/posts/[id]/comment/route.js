@@ -15,12 +15,12 @@ export async function POST(req, { params }) {
   const { content } = await req.json();
 
   if (!content) {
-    return NextResponse.json({ error: 'Comment content is required' }, { status: 400 });
+    return NextResponse.json({ error: 'Comment Content Is Required' }, { status: 400 });
   }
 
   const post = await Post.findById(id);
   if (!post) {
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Post Not Found' }, { status: 404 });
   }
 
   // Optionally fetch full user info from Clerk
@@ -32,5 +32,5 @@ export async function POST(req, { params }) {
   post.comments.push({ content, userEmail });
   await post.save();
 
-  return NextResponse.json({ message: 'Comment added', post });
+  return NextResponse.json({ message: 'Comment Added', post });
 }

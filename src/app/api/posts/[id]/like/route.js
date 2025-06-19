@@ -14,16 +14,16 @@ export async function POST(req, { params }) {
   }
 
   const post = await Post.findById(id);
-  if (!post) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+  if (!post) return NextResponse.json({ error: 'Post Not Found' }, { status: 404 });
 
   if (action === 'like') {
     post.upvotes += 1;
   } else if (action === 'dislike') {
     post.downvotes += 1;
   } else {
-    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid Action' }, { status: 400 });
   }
 
   await post.save();
-  return NextResponse.json({ message: 'Vote updated', status: 201 });
+  return NextResponse.json({ message: 'Vote Updated', status: 201 });
 }

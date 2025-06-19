@@ -19,8 +19,8 @@ const BlogDetails = () => {
 
             {/* Back Button */}
             <button
-                onClick={() => router.push('/blogs')}
-                className="flex items-center gap-2 text-purple-600 hover:underline mb-6"
+                onClick={() => router.push('/dashboard/myBlogs')}
+                className="flex items-center gap-2 text-purple-600 hover:underline mb-6 hover:cursor-pointer"
             >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Blogs

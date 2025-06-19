@@ -33,7 +33,6 @@ const CreatePost = () => {
       if (res.data.status === 201) {
         reset();
         router.push('/dashboard/myBlogs');
-        console.log(res);
         toast.success(res.data.message);
       }
     } catch (error) {
