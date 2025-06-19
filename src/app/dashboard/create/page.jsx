@@ -6,11 +6,12 @@ import { useUser } from '@clerk/nextjs';
 import { useCreatePostMutation } from '@/features/posts/postApi';
 import { useAuth } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const categories = ['Technology', 'Design', 'Education', 'Business', 'Lifestyle'];
 
 const CreatePost = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, getValues, setValue } = useForm();
   const { user } = useUser();
   const router = useRouter();
   const { getToken } = useAuth();
@@ -39,6 +40,27 @@ const CreatePost = () => {
       console.error('Error creating post:', error);
     }
   };
+
+  const handleTag = async () => {
+    const description = getValues('description');
+
+    if (!description) return toast.error('Add description first');
+
+    try {
+      const res = await axios.post('/api/ai/tags', { content: description });
+      const data = res.data;
+
+      if (data.tags) {
+        setValue('tags', data.tags.join(', '));
+        toast.success('Tags suggested!');
+      } else {
+        toast.error(data.error || 'Failed to generate tags');
+      }
+    } catch (e) {
+      toast.error('Error generating tags');
+    }
+  };
+
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
@@ -84,6 +106,16 @@ const CreatePost = () => {
             placeholder="e.g., design, ui, productivity"
           />
         </div>
+
+        <button
+          type="button"
+          onClick={() => handleTag()}
+          className="text-sm bg-emerald-600 text-white px-3 py-1 rounded"
+        >
+          Suggest Tags with AI
+        </button>
+
+
         {/* category */}
         <div>
           <label className="block mb-1 font-medium">Category</label>

@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.22.0",
+    "@google/generative-ai": "^0.24.1",
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.18.1",
+    "keen-slider": "^6.8.6",
     "lucide-react": "^0.516.0",
     "mongoose": "^8.16.0",
     "next": "15.3.3",
@@ -24,6 +26,7 @@
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
     "react-simple-typewriter": "^5.0.1",
+    "react-tooltip": "^5.29.1",
     "recharts": "^2.15.3",
     "sweetalert2": "^11.22.0"
   },

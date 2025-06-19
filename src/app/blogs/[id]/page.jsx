@@ -12,14 +12,14 @@ const BlogDetails = () => {
     const { id } = useParams();
     const router = useRouter();
     const { data: blog, refetch } = useGetPostByIdQuery(id);
-
-    const { isSignedIn } = useUser();
+    const { isSignedIn, user } = useUser();
 
     const [likePost] = useLikePostMutation();
     const [dislikePost] = useDislikePostMutation();
     const [commentPost] = useCommentPostMutation();
 
     const [commentText, setCommentText] = useState('');
+    const userEmail = user?.emailAddresses?.[0]?.emailAddress || 'unknown';
 
     if (!blog) return <p className="text-center mt-10">Loading...</p>;
 
@@ -48,8 +48,7 @@ const BlogDetails = () => {
             return toast.error('You must be logged in to comment.');
         }
         if (!commentText) return;
-        const res = await commentPost({ id, content: commentText });
-        console.log(res);
+        const res = await commentPost({ id, content: commentText, userEmail });
         if (res.data?.status === 201) {
             setCommentText('');
             refetch();
@@ -63,6 +62,8 @@ const BlogDetails = () => {
     const sortedComments = [...blog.comments].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
+
+    console.log(blog);
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-10">

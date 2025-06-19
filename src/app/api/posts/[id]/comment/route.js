@@ -12,7 +12,7 @@ export async function POST(req, { params }) {
   }
 
   const { id } = params;
-  const { content } = await req.json();
+  const { content, userEmail } = await req.json();
 
   if (!content) {
     return NextResponse.json({ error: 'Comment Content Is Required' }, { status: 400 });
@@ -23,14 +23,8 @@ export async function POST(req, { params }) {
     return NextResponse.json({ error: 'Post Not Found' }, { status: 404 });
   }
 
-  // Optionally fetch full user info from Clerk
-  const { getUser } = await import('@clerk/nextjs/server');
-  const user = await getUser(userId);
-
-  const userEmail = user?.emailAddresses?.[0]?.emailAddress || 'unknown';
-
   post.comments.push({ content, userEmail });
   await post.save();
 
-  return NextResponse.json({ message: 'Comment Added', post });
+  return NextResponse.json({ message: 'Comment Added', post, status: 201 });
 }

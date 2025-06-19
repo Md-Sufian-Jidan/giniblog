@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, } from '@clerk/nextjs';
 import { Menu, X } from 'lucide-react';
+import { useScroll, useMotionValueEvent } from 'framer-motion';
 
 const navItems = [
     { href: '/', label: 'Home' },
@@ -15,9 +16,15 @@ const navItems = [
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const { scrollY } = useScroll();
+
+    useMotionValueEvent(scrollY, 'change', (latest) => {
+        setScrolled(latest > 10);
+    });
 
     return (
-        <nav className="bg-[#FAF8F6] border-b border-gray-200 shadow-sm px-6 py-4">
+        <nav className={`sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''} bg-[#FAF8F6] border-b border-gray-200 shadow-sm px-6 py-4`}>
             <div className="max-w-7xl mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link href="/">

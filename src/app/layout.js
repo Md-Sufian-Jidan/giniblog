@@ -2,6 +2,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import App from '@/pages/App';
 import { Toaster } from "react-hot-toast";
+import "keen-slider/keen-slider.min.css";
 
 const roboto = Roboto({
   variable: "--font-roboto",

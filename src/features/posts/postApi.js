@@ -61,13 +61,14 @@ export const postApi = createApi({
       providesTags: ['Posts'],
     }),
     getPosts: builder.query({
-      query: ({ page = 1, search = '' }) => ({
+      query: ({ page = 1, search = '', sort = 'newest', category = 'all' }) => ({
         url: '/blogs',
         method: 'GET',
-        params: { page, search },
+        params: { page, search, sort, category },
       }),
       providesTags: ['Posts'],
     }),
+
     likePost: builder.mutation({
       query: ({ id }) => ({
         url: `/posts/${id}/like`,
@@ -85,10 +86,10 @@ export const postApi = createApi({
       invalidatesTags: ['Posts'],
     }),
     commentPost: builder.mutation({
-      query: ({ id, content }) => ({
+      query: ({ id, content, userEmail }) => ({
         url: `/posts/${id}/comment`,
         method: 'POST',
-        data: { content },
+        data: { content, userEmail },
       }),
       invalidatesTags: ['Posts'],
     }),
