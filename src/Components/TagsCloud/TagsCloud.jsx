@@ -29,7 +29,7 @@ export default function TagsCloud() {
     if (!tags.length) return null;
 
     return (
-        <section className="bg-[#FAF8F6]">
+        <section className="bg-[#FAF8F6] py-10 px-6 md:px-12">
             <h2 className="text-2xl font-semibold text-center mb-6 text-[#1F2937]">
                 🔖 Popular Tags
             </h2>

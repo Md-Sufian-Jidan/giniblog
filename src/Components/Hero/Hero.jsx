@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Hero = () => {
     return (
-        <section className="bg-[#FAF8F6] py-20 px-6 md:px-12 relative overflow-hidden">
+        <section className="bg-[#FAF8F6] py-10 px-6 md:px-12 relative overflow-hidden">
             {/* Text Area */}
             <div className="text-center z-10 relative">
                 <motion.h1

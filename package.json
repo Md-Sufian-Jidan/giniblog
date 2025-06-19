@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.22.0",
+    "@google/genai": "^1.5.1",
     "@google/generative-ai": "^0.24.1",
     "@lottiefiles/react-lottie-player": "^3.6.0",
     "@reduxjs/toolkit": "^2.8.2",
@@ -29,7 +30,8 @@
     "react-simple-typewriter": "^5.0.1",
     "react-tooltip": "^5.29.1",
     "recharts": "^2.15.3",
-    "sweetalert2": "^11.22.0"
+    "sweetalert2": "^11.22.0",
+    "swiper": "^11.2.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

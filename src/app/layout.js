@@ -4,6 +4,10 @@ import App from '@/pages/App';
 import { Toaster } from "react-hot-toast";
 import "keen-slider/keen-slider.min.css";
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],

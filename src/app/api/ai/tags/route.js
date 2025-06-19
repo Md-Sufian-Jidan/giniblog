@@ -1,35 +1,34 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import main from '@/lib/Gemini';
 import { NextResponse } from 'next/server';
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
     try {
         const body = await req.json();
-        console.log('Incoming body:', body);
+        const { prompt } = body;
 
-        const { content } = body;
-
-        if (!content) {
-            return NextResponse.json({ error: 'No content provided' }, { status: 400 });
+        if (!prompt) {
+            return NextResponse.json(
+                { success: false, error: 'Prompt is required' },
+                { status: 400 }
+            );
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-        const prompt = `Suggest 5 relevant tags for the following blog content:\n\n"${content}"`;
+        const fullPrompt = `
+    Topic: ${prompt}
+    Suggest 5 relevant tags based on this topic. Return tags only, with hash and comma-separated.
+    `;
 
-        const result = await model.generateContent([prompt]);
-        const text = await result.response.text();
-        console.log('Gemini response text:', text);
+        const content = await main(fullPrompt);
 
-        const tags = text
-            .split(/[\n,•-]/)
-            .map((tag) => tag.trim().toLowerCase())
-            .filter(Boolean)
-            .slice(0, 5);
-
-        return NextResponse.json({ tags });
+        return NextResponse.json({
+            success: true,
+            tags: content.trim(), // Example: "#ai, #computerscience, #future, #tech, #programming"
+        });
     } catch (error) {
-        console.error('Gemini API error:', error?.message || error);
-        return NextResponse.json({ error: 'Failed to generate tags', details: error?.message }, { status: 500 });
+        console.error('Error in /api/post:', error);
+        return NextResponse.json(
+            { success: false, error: error.message || 'Internal server error' },
+            { status: 500 }
+        );
     }
 }

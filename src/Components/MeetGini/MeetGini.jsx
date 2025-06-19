@@ -8,7 +8,7 @@ import giniAnimation from '@/assets/gini-avatar.json';
 
 const MeetGini = () => {
     return (
-        <section className="bg-[#FAF8F6] py-16 px-6">
+        <section className="bg-[#FAF8F6] py-10 px-6 md:px-12">
             <motion.div
                 className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8"
                 initial={{ opacity: 0, y: 60 }}

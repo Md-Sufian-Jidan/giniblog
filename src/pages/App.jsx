@@ -5,6 +5,7 @@ import { store } from '@/store/store';
 import { usePathname } from 'next/navigation';
 import Navbar from '@/Components/Navbar/Navbar';
 import { ClerkProvider } from '@clerk/nextjs';
+import Footer from '@/Components/Footer/Footer';
 
 export default function App({ children }) {
     const pathname = usePathname();
@@ -16,6 +17,7 @@ export default function App({ children }) {
                     {!isDashboard && <Navbar />}
                 </div>
                 {children}
+                {!isDashboard && <Footer />}
             </ClerkProvider >
         </Provider>
     );

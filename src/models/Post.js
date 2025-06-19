@@ -1,9 +1,18 @@
 import mongoose from 'mongoose';
 
-const commentSchema = new mongoose.Schema({
-    userEmail: String,
-    content: String,
-}, { timestamps: true });
+const commentSchema = new mongoose.Schema(
+    {
+        userEmail: String,
+        userName: String,
+        userImage: String,
+        content: String,
+        date: {
+            type: Date,
+            default: Date.now,
+        },
+    },
+    { timestamps: true }
+);
 
 const PostSchema = new mongoose.Schema(
     {

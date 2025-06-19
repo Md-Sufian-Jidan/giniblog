@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useUser } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 const BlogDetails = () => {
     const { id } = useParams();
@@ -19,7 +20,6 @@ const BlogDetails = () => {
     const [commentPost] = useCommentPostMutation();
 
     const [commentText, setCommentText] = useState('');
-    const userEmail = user?.emailAddresses?.[0]?.emailAddress || 'unknown';
 
     if (!blog) return <p className="text-center mt-10">Loading...</p>;
 
@@ -48,11 +48,19 @@ const BlogDetails = () => {
             return toast.error('You must be logged in to comment.');
         }
         if (!commentText) return;
-        const res = await commentPost({ id, content: commentText, userEmail });
+
+        const res = await commentPost({
+            id,
+            content: commentText,
+            userEmail: user?.emailAddresses?.[0]?.emailAddress || 'unknown',
+            userName: user?.fullName || 'Anonymous',
+            userImage: user?.imageUrl || '',
+        });
+
         if (res.data?.status === 201) {
             setCommentText('');
             refetch();
-            return toast.success(res.data.message)
+            return toast.success(res.data.message);
         }
     };
 
@@ -147,16 +155,27 @@ const BlogDetails = () => {
                             Comment
                         </button>
                     </form>
-                    <ul className="space-y-2">
+                    <ul className="space-y-4 mt-4">
                         {sortedComments.map((c, i) => (
-                            <li key={i} className="bg-purple-50 p-3 rounded text-sm">
-                                <div>{c.content}</div>
-                                <div className="text-gray-400 text-xs">
-                                    {c?.createdAt && !isNaN(new Date(c.createdAt))
-                                        ? formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })
-                                        : 'just now'}
-
+                            <li key={i} className="bg-white shadow-md p-4 rounded-md border border-purple-100">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <Image
+                                        src={c.userImage || '/default-avatar.svg'}
+                                        alt={c.userName || 'User'}
+                                        className="w-8 h-8 rounded-full"
+                                        width={32}
+                                        height={32}
+                                    />
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-800">{c.userName || 'Anonymous'}</p>
+                                        <p className="text-xs text-gray-400">
+                                            {c?.createdAt && !isNaN(new Date(c.createdAt))
+                                                ? formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })
+                                                : 'just now'}
+                                        </p>
+                                    </div>
                                 </div>
+                                <p className="text-sm text-gray-700">{c.content}</p>
                             </li>
                         ))}
                     </ul>

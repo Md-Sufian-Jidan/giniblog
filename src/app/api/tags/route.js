@@ -4,7 +4,7 @@ import { connectDB } from '@/lib/ConnectDB';
 
 export async function GET() {
     try {
-        await connectDB();  
+        await connectDB();
         const tagsAggregation = await Post.aggregate([
             { $unwind: '$tags' },
             { $group: { _id: '$tags', count: { $sum: 1 } } },

@@ -41,24 +41,36 @@ const CreatePost = () => {
     }
   };
 
-  const handleTag = async () => {
-    const description = getValues('description');
+  // const handleTag = async () => {
+  //   const description = getValues('description');
 
-    if (!description) return toast.error('Add description first');
+  //   if (!description) return toast.error('Add description first');
 
-    try {
-      const res = await axios.post('/api/ai/tags', { content: description });
-      const data = res.data;
+  //   try {
+  //     const res = await axios.post('/api/ai/tags', { content: description });
+  //     console.log(res);
+  //     const data = res.data;
 
-      if (data.tags) {
-        setValue('tags', data.tags.join(', '));
-        toast.success('Tags suggested!');
-      } else {
-        toast.error(data.error || 'Failed to generate tags');
-      }
-    } catch (e) {
-      toast.error('Error generating tags');
-    }
+  //     if (data.tags) {
+  //       setValue('tags', data.tags.join(', '));
+  //       toast.success('Tags suggested!');
+  //     } else {
+  //       toast.error(data.error || 'Failed to generate tags');
+  //     }
+  //   } catch (e) {
+  //     toast.error('Error generating tags');
+  //   }
+  // };
+
+  const getTags = async () => {
+    const res = await fetch('/api/ai/tags', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: 'computer science' }),
+    });
+
+    const data = await res.json();
+    console.log(data.tags); // -> "#ai, #computerscience, #tech, #coding, #innovation"
   };
 
 
@@ -109,7 +121,7 @@ const CreatePost = () => {
 
         <button
           type="button"
-          onClick={() => handleTag()}
+          onClick={() => getTags()}
           className="text-sm bg-emerald-600 text-white px-3 py-1 rounded"
         >
           Suggest Tags with AI
