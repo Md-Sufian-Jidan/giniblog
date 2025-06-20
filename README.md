@@ -2,6 +2,11 @@
 
 GiniBlog is a modern, AI-powered blogging platform built with **Next.js 15**, **Clerk Authentication**, **Google Generative AI (Gemini)**, **Redux Toolkit**, and **MongoDB**. It enables users to write blogs with the help of AI, manage posts, suggest tags automatically, and interact with an elegant and responsive UI.
 
+## Live site: 
+<a href="https://giniblog-git-main-md-sufian-jidans-projects.vercel.app/">Link</a>
+
+---
+
 ## 🚀 Features
 
 - ✍️ Create, edit, delete, and view blog posts
