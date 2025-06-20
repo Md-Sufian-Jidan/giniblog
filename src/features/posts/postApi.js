@@ -85,10 +85,10 @@ export const postApi = createApi({
       invalidatesTags: ['Posts'],
     }),
     commentPost: builder.mutation({
-      query: ({ id, content, userEmail }) => ({
+      query: ({ id, content, userEmail, userName, userImage }) => ({
         url: `/posts/${id}/comment`,
         method: 'POST',
-        data: { content, userEmail },
+        data: { content, userEmail, userName, userImage },
       }),
       invalidatesTags: ['Posts'],
     }),

@@ -14,6 +14,7 @@ const BlogDetails = () => {
     const router = useRouter();
     const { data: blog, refetch } = useGetPostByIdQuery(id);
     const { isSignedIn, user } = useUser();
+    console.log(blog);
 
     const [likePost] = useLikePostMutation();
     const [dislikePost] = useDislikePostMutation();
@@ -51,10 +52,10 @@ const BlogDetails = () => {
 
         const res = await commentPost({
             id,
-            content: commentText,
-            userEmail: user?.emailAddresses?.[0]?.emailAddress || 'unknown',
             userName: user?.fullName || 'Anonymous',
             userImage: user?.imageUrl || '',
+            userEmail: user?.emailAddresses?.[0]?.emailAddress || 'unknown',
+            content: commentText,
         });
 
         if (res.data?.status === 201) {
