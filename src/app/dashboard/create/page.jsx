@@ -6,18 +6,16 @@ import { useUser } from '@clerk/nextjs';
 import { useCreatePostMutation } from '@/features/posts/postApi';
 import { useAuth } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 
 const categories = ['Technology', 'Design', 'Education', 'Business', 'Lifestyle'];
 
 const CreatePost = () => {
-  const { register, handleSubmit, reset, getValues, setValue } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, watch, getValues, setValue } = useForm();
   const { user } = useUser();
   const router = useRouter();
   const { getToken } = useAuth();
-
+  const watchedTags = watch('tags');
   const [createPost, { isLoading }] = useCreatePostMutation();
-
   const onSubmit = async (data) => {
     const token = await getToken();
     const postPayload = {
@@ -40,39 +38,29 @@ const CreatePost = () => {
       console.error('Error creating post:', error);
     }
   };
-
-  // const handleTag = async () => {
-  //   const description = getValues('description');
-
-  //   if (!description) return toast.error('Add description first');
-
-  //   try {
-  //     const res = await axios.post('/api/ai/tags', { content: description });
-  //     console.log(res);
-  //     const data = res.data;
-
-  //     if (data.tags) {
-  //       setValue('tags', data.tags.join(', '));
-  //       toast.success('Tags suggested!');
-  //     } else {
-  //       toast.error(data.error || 'Failed to generate tags');
-  //     }
-  //   } catch (e) {
-  //     toast.error('Error generating tags');
-  //   }
-  // };
-
   const getTags = async () => {
-    const res = await fetch('/api/ai/tags', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: 'computer science' }),
-    });
+    const description = getValues('description');
 
-    const data = await res.json();
-    console.log(data.tags); // -> "#ai, #computerscience, #tech, #coding, #innovation"
+    if (!description) return toast.error('Add description first');
+    try {
+      const res = await fetch('/api/ai/tags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: description }),
+      });
+      const data = await res.json();
+
+      if (data.tags) {
+        setValue('tags', data.tags);
+        toast.success('Tags suggested!');
+      }
+      else {
+        toast.error(data.error || 'Failed to generate tags');
+      }
+    } catch (e) {
+      toast.error('Error generating tags');
+    }
   };
-
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
@@ -88,6 +76,7 @@ const CreatePost = () => {
             className="w-full border p-2 rounded-lg"
             placeholder="Enter the blog title"
           />
+          {errors.title && <p className="text-red-600">{errors.title.message}</p>}
         </div>
         {/* description */}
         <div>
@@ -97,37 +86,43 @@ const CreatePost = () => {
             className="w-full border p-2 rounded-lg min-h-[120px]"
             placeholder="Write your blog content here"
           ></textarea>
+          {errors.description && <p className="text-red-600">{errors.description.message}</p>}
         </div>
         {/* image url */}
         <div>
           <label className="block mb-1 font-medium">Image URL</label>
           <input
-            {...register('image', { required: true })}
-            type="url"
-            className="w-full border p-2 rounded-lg"
-            placeholder="https://example.com/image.jpg"
+            {...register('image', {
+              required: 'Image URL is required',
+              pattern: {
+                value: /^https?:\/\/.+\.(jpg|jpeg|png|webp|svg|gif)$/i,
+                message: 'Enter a valid image URL',
+              },
+            })}
+            className="w-full border rounded px-3 py-2"
           />
+          {errors.image && <p className="text-red-600">{errors.image.message}</p>}
         </div>
         {/* tags */}
         <div>
           <label className="block mb-1 font-medium">Tags (comma separated)</label>
           <input
             {...register('tags')}
+            value={watchedTags || ''}
+            onChange={(e) => setValue('tags', e.target.value)}
             type="text"
             className="w-full border p-2 rounded-lg"
             placeholder="e.g., design, ui, productivity"
           />
+          {errors.tags && <p className="text-red-600">{errors.tags.message}</p>}
         </div>
-
         <button
           type="button"
           onClick={() => getTags()}
-          className="text-sm bg-emerald-600 text-white px-3 py-1 rounded"
+          className="text-sm bg-emerald-600 text-white px-3 py-1 rounded hover:cursor-pointer"
         >
           Suggest Tags with AI
         </button>
-
-
         {/* category */}
         <div>
           <label className="block mb-1 font-medium">Category</label>
@@ -142,6 +137,7 @@ const CreatePost = () => {
               </option>
             ))}
           </select>
+          {errors.category && <p className="text-red-600">{errors.category.message}</p>}
         </div>
         {/* submit button */}
         <div className='text-center'>

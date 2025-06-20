@@ -17,6 +17,9 @@ const roboto = Roboto({
 export const metadata = {
   title: "GiniBlog",
   description: "GiniBlog is Blog website. With the help of the website you can write blog with ai.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -24,7 +27,9 @@ export default function RootLayout({ children }) {
     <App>
       <html lang="en">
         <body className={`${roboto.variable} antialiased`}>
-          {children}
+          <div className='min-h-[calc(100vh-370px)]'>
+            {children}
+          </div>
           <Toaster
             position="top-center"
             reverseOrder={false}

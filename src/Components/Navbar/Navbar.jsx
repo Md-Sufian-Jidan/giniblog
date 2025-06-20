@@ -10,7 +10,7 @@ import { useScroll, useMotionValueEvent } from 'framer-motion';
 const navItems = [
     { href: '/', label: 'Home' },
     { href: '/blogs', label: 'Blogs' },
-    { href: '/create', label: 'Write' },
+    { href: '/about', label: 'About' },
     { href: '/dashboard', label: 'Dashboard' },
 ];
 

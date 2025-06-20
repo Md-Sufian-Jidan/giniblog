@@ -4,12 +4,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter, useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-import {
-    useGetPostByIdQuery,
-    useUpdatePostMutation,
-} from '@/features/posts/postApi';
+import { useGetPostByIdQuery, useUpdatePostMutation, } from '@/features/posts/postApi';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 
 const EditPostPage = () => {
     const { id } = useParams();
@@ -20,13 +16,9 @@ const EditPostPage = () => {
     const { data: postData, isLoading } = useGetPostByIdQuery(id);
     const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-        getValues, setValue
-    } = useForm();
+    const { register, handleSubmit, reset, formState: { errors }, getValues, setValue, watch } = useForm();
+    const watchedTags = watch('tags');
+
 
     useEffect(() => {
         if (postData) {
@@ -34,7 +26,7 @@ const EditPostPage = () => {
                 title: postData.title,
                 description: postData.description,
                 image: postData.image,
-                tags: postData.tags.join(', '),
+                tags: postData.tags,
                 category: postData.category,
             });
         }
@@ -57,29 +49,35 @@ const EditPostPage = () => {
         }
     };
 
-    const handleTag = async () => {
+    const getTags = async () => {
         const description = getValues('description');
 
         if (!description) return toast.error('Add description first');
         try {
-            const res = await axios.post('/api/ai/tags', { content: description });
-
+            const res = await fetch('/api/ai/tags', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: description }),
+            });
             const data = await res.json();
+            console.log(data.tags);
+
             if (data.tags) {
-                setValue((prev) => ({ ...prev, tags: data.tags.join(', ') }));
+                setValue('tags', data.tags);
                 toast.success('Tags suggested!');
-            } else {
+            }
+            else {
                 toast.error(data.error || 'Failed to generate tags');
             }
         } catch (e) {
             toast.error('Error generating tags');
         }
-    }
+    };
 
     if (isLoading) return <p>Loading post...</p>;
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Edit Your Post</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Title */}
@@ -122,14 +120,18 @@ const EditPostPage = () => {
                     <label className="block mb-1 font-medium">Tags (comma separated)</label>
                     <input
                         {...register('tags')}
-                        className="w-full border rounded px-3 py-2"
+                        value={watchedTags || ''}
+                        onChange={(e) => setValue('tags', e.target.value)}
+                        type="text"
+                        className="w-full border p-2 rounded-lg"
+                        placeholder="e.g., design, ui, productivity"
                     />
                 </div>
                 {/* generate ai tags */}
                 <button
                     type="button"
-                    onClick={() => handleTag()}
-                    className="text-sm bg-emerald-600 text-white px-3 py-1 rounded"
+                    onClick={() => getTags()}
+                    className="text-sm bg-emerald-600 text-white px-3 py-1 rounded hover:cursor-pointer"
                 >
                     Suggest Tags with AI
                 </button>

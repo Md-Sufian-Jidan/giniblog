@@ -13,7 +13,7 @@ export default function App({ children }) {
     return (
         <Provider store={store}>
             <ClerkProvider dynamic>
-                <div className='h-16'>
+                <div className={`${isDashboard ? '' : 'h-16'}`}>
                     {!isDashboard && <Navbar />}
                 </div>
                 {children}

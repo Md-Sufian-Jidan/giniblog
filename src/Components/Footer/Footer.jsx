@@ -19,7 +19,7 @@ const Footer = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                 >
-                    <Link href={'/'} className="text-xl font-bold text-[#A78BFA] mb-2">GiniBlog</Link>
+                    <Link href={'/'} className="text-xl font-bold text-[#A78BFA] mb-2 hover:cursor-pointer">GiniBlog</Link>
                     <p className="text-sm">
                         Insightful blogs, creative content, and inspiring thoughts for curious minds.
                     </p>
@@ -33,10 +33,10 @@ const Footer = () => {
                 >
                     <h3 className="text-sm font-semibold mb-4">Quick Links</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><Link href="/" className="hover:hover:text-[#1D4ED8] transition">Home</Link></li>
-                        <li><Link href="/blogs" className="hover:hover:text-[#1D4ED8] transition">Blogs</Link></li>
-                        <li><Link href="/about" className="hover:hover:text-[#1D4ED8] transition">About</Link></li>
-                        <li><Link href="/contact" className="hover:hover:text-[#1D4ED8] transition">Contact</Link></li>
+                        <li><Link href="/" className="hover:text-[#1D4ED8] transition">Home</Link></li>
+                        <li><Link href="/blogs" className="hover:text-[#1D4ED8] transition">Blogs</Link></li>
+                        <li><Link href="/about" className="hover:text-[#1D4ED8] transition">About</Link></li>
+                        <li><Link href="/contact" className="hover:text-[#1D4ED8] transition">Contact</Link></li>
                     </ul>
                 </motion.div>
 
@@ -50,28 +50,28 @@ const Footer = () => {
                     <div className="flex gap-4">
                         <Link
                             href="#"
-                            className="text-[#1F2937] hover:hover:text-[#1D4ED8] transition"
+                            className="text-[#1F2937] hover:text-[#1D4ED8] transition"
                             aria-label="Twitter"
                         >
                             <Twitter className="w-5 h-5" />
                         </Link>
                         <Link
                             href="#"
-                            className="text-[#1F2937] hover:hover:text-[#1D4ED8] transition"
+                            className="text-[#1F2937] hover:text-[#1D4ED8] transition"
                             aria-label="Instagram"
                         >
                             <Instagram className="w-5 h-5" />
                         </Link>
                         <Link
                             href="#"
-                            className="text-[#1F2937] hover:hover:text-[#1D4ED8] transition"
+                            className="text-[#1F2937] hover:text-[#1D4ED8] transition"
                             aria-label="LinkedIn"
                         >
                             <Linkedin className="w-5 h-5" />
                         </Link>
                         <Link
                             href="#"
-                            className="text-[#1F2937] hover:hover:text-[#1D4ED8] transition"
+                            className="text-[#1F2937] hover:text-[#1D4ED8] transition"
                             aria-label="GitHub"
                         >
                             <Github className="w-5 h-5" />
@@ -81,8 +81,8 @@ const Footer = () => {
             </div>
 
             {/* Bottom Note */}
-            <div className="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
-                &copy; {new Date().getFullYear()} YourBlog. All rights reserved.
+            <div className="mt-10 pt-6 text-center text-sm text-gray-500">
+                &copy; {new Date().getFullYear()} <span className='text-[#1D4ED8]'>GiniBlog</span>. All rights reserved.
             </div>
         </motion.footer>
     );

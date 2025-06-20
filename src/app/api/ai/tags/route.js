@@ -22,7 +22,7 @@ export async function POST(req) {
 
         return NextResponse.json({
             success: true,
-            tags: content.trim(), // Example: "#ai, #computerscience, #future, #tech, #programming"
+            tags: content.trim(),
         });
     } catch (error) {
         console.error('Error in /api/post:', error);
