@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 import { FiEdit3, FiZap } from 'react-icons/fi';
 import { Player } from '@lottiefiles/react-lottie-player';
-import giniAnimation from '@/assets/gini-avatar.json';
+import giniAnimation from '/gini-avatar.json';
 
 const MeetGini = () => {
     return (
